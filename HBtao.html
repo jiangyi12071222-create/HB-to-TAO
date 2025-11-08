@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐，我的爱人</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ff6b81',
+                        secondary: '#ffd166',
+                        accent: '#06d6a0',
+                        dark: '#2c3e50',
+                        light: '#f8f9fa'
+                    },
+                    fontFamily: {
+                        romantic: ['Segoe UI', 'Roboto', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0,0,0,0.25);
+            }
+            .candle-glow {
+                box-shadow: 0 0 15px 5px rgba(255, 210, 102, 0.8), 
+                            0 0 30px 15px rgba(255, 107, 129, 0.4);
+            }
+            .flame {
+                border-radius: 50% 50% 20% 20%;
+                transform-origin: bottom center;
+                animation: flame 2s infinite alternate;
+            }
+            .cake-shadow {
+                box-shadow: inset 15px 15px 0 rgba(0,0,0,0.05);
+            }
+            .letter-appear {
+                animation: letterAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+            .confetti {
+                animation: confetti 5s ease-in-out infinite;
+            }
+        }
+
+        @keyframes flame {
+            0% {
+                transform: scale(1) rotate(-2deg);
+                height: 35px;
+                width: 20px;
+            }
+            100% {
+                transform: scale(1.1) rotate(2deg);
+                height: 40px;
+                width: 22px;
+            }
+        }
+
+        @keyframes candleBurn {
+            0% {
+                height: 100px;
+            }
+            100% {
+                height: 20px;
+            }
+        }
+
+        @keyframes letterAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-light to-pink-100 min-h-screen flex items-center justify-center overflow-hidden font-romantic">
+    <!-- 页面1: 蛋糕场景 -->
+    <div id="cake-container" class="relative w-full h-screen flex flex-col items-center justify-center transition-opacity duration-1000">
+        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary text-shadow-lg mb-8 opacity-0 transition-opacity duration-1000" id="birthday-title">生日快乐，我的爱人</h1>
+        
+        <div class="relative w-[clamp(280px,60vw,500px)] h-[clamp(300px,70vh,550px)] flex flex-col items-center justify-start pt-8">
+            <!-- 蛋糕上层 -->
+            <div class="w-2/3 h-1/4 bg-gradient-to-r from-[#DEB887] to-[#F5DEB3] rounded-b-3xl cake-shadow flex justify-center items-end pb-4">
+                <!-- 蜡烛 -->
+                <div id="candle" class="relative w-6 h-[100px] bg-gradient-to-r from-[#F08080] to-[#CD5C5C] rounded-md cursor-pointer transition-all duration-500 hover:scale-105">
+                    <div class="absolute top-1 left-1 right-1 h-2 bg-secondary rounded-t-md"></div>
+                    <div id="flame" class="absolute top-[-35px] left-1/2 transform -translate-x-1/2 w-[20px] h-[35px] bg-gradient-to-t from-[#FFA500] via-[#FF4500] to-[#FFFF00] flame candle-glow"></div>
+                </div>
+            </div>
+            
+            <!-- 蛋糕中层 -->
+            <div class="w-3/4 h-1/3 bg-gradient-to-r from-[#D2691E] to-[#DEB887] rounded-b-3xl -mt-2 cake-shadow relative">
+                <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
+                    <div class="w-2 h-2 bg-primary rounded-full"></div>
+                    <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- 蛋糕底座 -->
+            <div class="w-4/5 h-1/3 bg-gradient-to-r from-[#8B4513] to-[#A0522D] rounded-b-3xl -mt-2 cake-shadow"></div>
+        </div>
+        
+        <p class="mt-8 text-dark/70 text-lg opacity-0 transition-opacity duration-1000 delay-500" id="click-instruction">点击蜡烛，为她庆祝生日</p>
+    </div>
+
+    <!-- 页面2: 信件场景 -->
+    <div id="letter-container" class="fixed inset-0 bg-light/95 z-10 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-1000">
+        <div class="relative max-w-2xl w-full bg-white rounded-xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-700">
+            <!-- 信封顶部 -->
+            <div class="h-16 bg-primary relative">
+                <div class="absolute top-4 left-4 w-12 h-12 border-4 border-white/30 rounded-full flex items-center justify-center">
+                    <i class="fa fa-heart text-white text-xl"></i>
+                </div>
+            </div>
+            
+            <!-- 信件内容 -->
+            <div class="p-8 md:p-12 bg-[url('https://picsum.photos/id/106/1000/1000')] bg-cover bg-center bg-fixed">
+                <div class="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-lg shadow-inner">
+                    <div id="letter-content" class="prose prose-lg max-w-none text-dark">
+                        <p>我亲爱的爱人：</p>
+                        <p>当你看到这封信时，希望你正沉浸在生日的喜悦中。这一年，感谢你一直陪伴在我身边，你的笑容是我每天最期待的风景。</p>
+                        <p>和你在一起的每一天都充满了阳光和温暖，你让我的生命变得更加完整和有意义。</p>
+                        <p>愿这一天充满快乐，愿你的所有梦想都能实现。我会一直陪伴在你身边，一起经历生命中的每一个美好时刻。</p>
+                        <p>生日快乐，我永远爱你！</p>
+                        <p class="text-right mt-8">爱你的人</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cakeContainer = document.getElementById('cake-container');
+            const letterContainer = document.getElementById('letter-container');
+            const candle = document.getElementById('candle');
+            const flame = document.getElementById('flame');
+            const birthdayTitle = document.getElementById('birthday-title');
+            const clickInstruction = document.getElementById('click-instruction');
+            
+            // 页面加载后显示标题和提示
+            setTimeout(() => {
+                birthdayTitle.classList.add('opacity-100');
+                setTimeout(() => {
+                    clickInstruction.classList.add('opacity-100');
+                }, 500);
+            }, 800);
+            
+            // 点击蜡烛事件
+            candle.addEventListener('click', function() {
+                // 移除点击提示
+                clickInstruction.classList.remove('opacity-100');
+                
+                // 蜡烛燃烧动画
+                candle.style.animation = 'candleBurn 8s linear forwards';
+                
+                // 火焰动画变化
+                flame.style.animation = 'flame 1s infinite alternate';
+                
+                // 8秒后显示信件（与蜡烛燃烧时间同步）
+                setTimeout(() => {
+                    // 火焰熄灭
+                    flame.style.opacity = '0';
+                    
+                    // 延迟后显示信件
+                    setTimeout(() => {
+                        cakeContainer.classList.add('opacity-0');
+                        setTimeout(() => {
+                            cakeContainer.style.display = 'none';
+                            letterContainer.classList.remove('opacity-0', 'pointer-events-none');
+                            letterContainer.querySelector('div').classList.remove('scale-95');
+                            letterContainer.querySelector('div').classList.add('scale-100');
+                            
+                            // 创建彩带动画
+                            createConfetti();
+                        }, 1000);
+                    }, 1000);
+                }, 8000);
+            });
+            
+            // 创建彩带动画
+            function createConfetti() {
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                const container = document.createElement('div');
+                container.classList.add('fixed', 'inset-0', 'pointer-events-none', 'z-20');
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    const size = Math.random() * 10 + 5;
+                    
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.position = 'absolute';
+                    confetti.style.top = `${Math.random() * -50}px`;
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    
+                    // 随机动画时长和延迟
+                    const animationDuration = Math.random() * 5 + 5;
+                    const animationDelay = Math.random() * 5;
+                    
+                    confetti.style.animation = `confetti ${animationDuration}s ease-in-out ${animationDelay}s infinite`;
+                    
+                    container.appendChild(confetti);
+                }
+                
+                document.body.appendChild(container);
+                
+                // 5秒后移除彩带
+                setTimeout(() => {
+                    container.remove();
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
